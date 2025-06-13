@@ -1,0 +1,68 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # This workflow runs when a tag is pushed that starts with 'v'
+
+jobs:
+  release:
+    permissions: write-all
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - uses: nowsprinting/check-version-format-action@v3
+        id: version
+        with:
+          prefix: 'v'
+
+      - name: Update Assembly and NuGet package version
+        run: |
+          version=${{ steps.version.outputs.full_without_prefix }}
+          echo "Updating Assembly and NuGet package versions to ${version}"
+          sed -i "s/<VersionPrefix>.*<\/VersionPrefix>/<VersionPrefix>${version}<\/VersionPrefix>/g" ./SqlServer2PlantUml.csproj
+        working-directory: src
+
+      - name: Build the project
+        run: dotnet build --configuration Release
+        working-directory: src
+
+      - name: Pack the NuGet package
+        run: dotnet pack --configuration Release --output ./artifacts
+        working-directory: src
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-package
+          path: ./artifacts/*.nupkg
+          working-directory: src
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ steps.version.outputs.full }}
+          release_name: Release ${{ steps.version.outputs.full_without_prefix }}
+          body: |
+            Release version ${{ steps.version.outputs.full_without_prefix }}.
+          draft: false
+          prerelease: false
+          files: ./artifacts/*.nupkg          
+          working-directory: src
+        
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push NuGet package to nuget.org
+        run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        working-directory: src
+
+      - name: Push NuGet package to GitHub packages
+        run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+        working-directory: src

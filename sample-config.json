@@ -1,0 +1,17 @@
+{
+  "includeDescriptions": true,
+  "includeDataTypes": true,
+  "includeIndexes": false,
+  "includeRelationships": true,
+  "maxTables": 0,
+  "includeSchemas": [],
+  "excludeSchemas": ["sys", "INFORMATION_SCHEMA"],
+  "excludeTables": ["*temp*", "__*", "sysdiagrams"],
+  "includeTablePatterns": [],
+  "excludeTablePatterns": ["^__.*", ".*_temp$"],
+  "theme": null,
+  "customDirectives": [
+    "skinparam linetype ortho",
+    "skinparam roundcorner 5"
+  ]
+}

@@ -10,7 +10,7 @@
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>sqlserver2puml</ToolCommandName>
 		<PackageId>sqlserver2puml</PackageId>
-		<PackageVersion>$(NETCoreAppMaximumVersion).0</PackageVersion>
+		<VersionPrefix>1.0.0</VersionPrefix>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageReleaseNotes>https://github.com/pregress/SqlServer2PlantUml/blob/main/Documentation/Changelog.md</PackageReleaseNotes>
