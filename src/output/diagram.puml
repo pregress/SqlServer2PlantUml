@@ -1,0 +1,85 @@
+@startuml
+' Generated on 2025-06-13 11:55:59 UTC
+' Database: 
+
+skinparam linetype ortho
+skinparam roundcorner 5
+skinparam class {
+    BackgroundColor LightBlue
+    BorderColor DarkBlue
+    ArrowColor DarkBlue
+}
+
+entity "EntitlementRevocations" {
+  * Id : INT
+  --
+  EntitlementId : INT <<NOT NULL>>
+  Reason : NVARCHAR(256) <<NOT NULL>>
+  RevokedAt : DATETIMEOFFSET <<NOT NULL>>
+  RevokedBy : NVARCHAR(256) <<NOT NULL>>
+}
+
+entity "Entitlements" {
+  * Id : INT
+  --
+  Gateway : VARCHAR(14) <<NOT NULL>>
+  EntitlementTypeId : INT <<NOT NULL>>
+  ActiveFrom : DATETIMEOFFSET <<NOT NULL>>
+  ActiveUntil : DATETIMEOFFSET <<NOT NULL>>
+  Origin : NVARCHAR(256) <<NOT NULL>>
+}
+
+entity "EntitlementTypes" {
+  * Id : INT
+  --
+  Name : NVARCHAR(256) <<NOT NULL>>
+}
+
+entity "LicenseKeyRedemptions" {
+  * Id : INT
+  --
+  RedeemedAt : DATETIMEOFFSET <<NOT NULL>>
+  RedeemedBy : NVARCHAR(256) <<NOT NULL>>
+  RedeemedFor : NVARCHAR(256) <<NOT NULL>>
+}
+
+entity "LicenseKeys" {
+  * Id : INT
+  --
+  LicenseId : INT <<NOT NULL>>
+  ActivationCode : NVARCHAR(450) <<NOT NULL>>
+  SoldToId : NVARCHAR(256) <<NOT NULL>>
+}
+
+entity "Licenses" {
+  * Id : INT
+  --
+  Name : NVARCHAR(256) <<NOT NULL>>
+}
+
+entity "LicenseVersions" {
+  * Id : INT
+  --
+  LicenseId : INT <<NOT NULL>>
+  ActiveFrom : DATETIMEOFFSET <<NOT NULL>>
+}
+
+entity "VersionedLicenseContents" {
+  * Id : INT
+  --
+  LicenseVersionId : INT <<NOT NULL>>
+  EntitlementTypeId : INT <<NOT NULL>>
+  EntitlementDuration : NVARCHAR(20) <<NOT NULL>>
+}
+
+
+' Relationships
+Entitlements ||--{ EntitlementRevocations : Id
+EntitlementTypes ||--{ Entitlements : Id
+LicenseKeys ||--{ LicenseKeyRedemptions : Id
+Licenses ||--{ LicenseKeys : Id
+Licenses ||--{ LicenseVersions : Id
+EntitlementTypes ||--{ VersionedLicenseContents : Id
+LicenseVersions ||--{ VersionedLicenseContents : Id
+
+@enduml

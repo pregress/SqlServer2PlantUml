@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net$(NETCoreAppMaximumVersion)</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<WarningAsError>True</WarningAsError>
+		<!-- .NET Tool Configuration -->
+		<PackAsTool>true</PackAsTool>
+		<ToolCommandName>sqlserver2puml</ToolCommandName>
+		<PackageId>sqlserver2puml</PackageId>
+		<PackageVersion>$(NETCoreAppMaximumVersion).0</PackageVersion>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageReleaseNotes>https://github.com/pregress/SqlServer2PlantUml/blob/main/Documentation/Changelog.md</PackageReleaseNotes>
+		<PackageIconUrl>https://github.com/pregress/SqlServer2PlantUml/blob/main/_assets/icon.png</PackageIconUrl>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageProjectUrl>https://github.com/pregress/SqlServer2PlantUml</PackageProjectUrl>
+		<Authors>pregress</Authors>
+		<Description>A .NET tool that generates PlantUML entity relationship diagrams from SQL Server databases</Description>
+		<PackageTags>plantuml;sqlserver;database;diagram;erd</PackageTags>
+		<RepositoryUrl>https://github.com/pregress/sqlserver2puml</RepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
+		<PackageReference Include="Dapper" Version="2.1.66" />
+		<PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+		<PackageReference Include="Azure.Identity" Version="1.14.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.6" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.6" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.6" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="$(MSBuildThisFileDirectory)..\_assets\icon.png" Pack="true" PackagePath="\" />
+		<None Include="..\README.md" Link="README.md" Pack="true" PackagePath="\">
+			<PackageCopyToOutput>true</PackageCopyToOutput>
+		</None>
+	</ItemGroup>
+
+</Project>
